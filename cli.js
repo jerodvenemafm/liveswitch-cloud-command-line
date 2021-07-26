@@ -3,6 +3,7 @@ const prompts = require('prompts');
 const open = require('open');
 const questions = require('./questions');
 const SwaggerClient = require('swagger-client');
+const liveswitchapi = require('./liveswitch-api');
 
 const AUTH0_CLIENT_ID = 'edunyHPs31vIJOaOCYD5yxKS1Y8M9vIL';
 const AUTH0_DOMAIN = 'frozenmountain.auth0.com';
@@ -65,33 +66,22 @@ const LSIO_DOMAIN = 'api.liveswitch.io';
 
   if (tokens) {
     console.log('\n\nresult tokens', { ...tokens });
-    
+
+    // TODO: exchange for an API key
+    //const apiKeys = await liveswitchapi.getApiKeys(token)
+    //liveswitchapi.apiKey = apiKeys[0];
+
+    // set the api key; we grab the first (default) api key
+    liveswitchapi.apiKey = '';
+    const applications = await liveswitchapi.getApplications();
+
     // 
-    // TODO: we have a token; exchange for an API key for the LS Cloud Console
     
-    // now that we have the API key, get a list of Applications
-      /*new SwaggerClient(`https://${LSIO_DOMAIN}/swagger/1.0/swagger.json`, {
-        requestInterceptor: (req) => {
-          req.headers['x-api-key'] = ''
-          return req;
-        },
-      })
-        .then(
-          client => client.apis.ApiKeys.get_ApiKeys(),
-          reason => console.error('failed to load the spec: ' + reason)
-        )
-        .then(
-          getApiKeysResult => console.log(getApiKeysResult),
-          reason => console.error('failed on api call: ' + reason)
-        );
-
-    
-
     // requests without openid scope will not contain an id_token
-    if (tokens.id_token) {
-      console.log('\n\nID Token Claims', tokens.claims());
-    }
-*/
+    //if (tokens.id_token) {
+    //  console.log('\n\nID Token Claims', tokens.claims());
+    //}
+
     // try-catching this since resource may have been used and the access token may
     // not be eligible for accessing the UserInfo Response
     try {
